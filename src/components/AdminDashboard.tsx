@@ -478,10 +478,6 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             >
               {wakingUp ? 'Waking up...' : 'Wake Up Server'}
             </Button>
-            
-            <p className="text-xs text-muted-foreground text-center">
-              Default: admin / tourettes2026
-            </p>
           </div>
         </DialogContent>
       </Dialog>

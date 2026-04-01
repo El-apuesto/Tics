@@ -117,7 +117,7 @@ export const adminApi = {
   },
 
   // Helper method for authenticated requests
-  private async authenticatedRequest(token: string, url: string, options: RequestInit = {}) {
+  async authenticatedRequest(token: string, url: string, options: RequestInit = {}) {
     return fetch(url, {
       ...options,
       headers: {

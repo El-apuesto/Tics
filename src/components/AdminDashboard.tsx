@@ -31,6 +31,19 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [authToken, setAuthToken] = useState('');
+  const [wakingUp, setWakingUp] = useState(false);
+
+  const wakeUpServer = async () => {
+    setWakingUp(true);
+    try {
+      await fetch(`${API_BASE}/shows`);
+      alert('Server is waking up...');
+    } catch (error) {
+      alert('Server wake-up initiated');
+    } finally {
+      setWakingUp(false);
+    }
+  };
 
   // Alt+Space+Enter combo for /dash page too
   useEffect(() => {
@@ -455,6 +468,15 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             <Button onClick={handleLogin} className="w-full btn-primary">
               <Lock className="w-4 h-4 mr-2" />
               Login
+            </Button>
+            
+            <Button 
+              onClick={wakeUpServer} 
+              disabled={wakingUp}
+              variant="secondary" 
+              className="w-full"
+            >
+              {wakingUp ? 'Waking up...' : 'Wake Up Server'}
             </Button>
             
             <p className="text-xs text-muted-foreground text-center">

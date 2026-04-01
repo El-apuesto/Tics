@@ -6,7 +6,7 @@ const getApiBase = () => {
       return 'http://localhost:3001/api';
     }
     // Production URL - replace with your deployed backend URL
-    return 'https://tourettes-api.onrender.com/api';
+    return 'https://tics-u3io.onrender.com/api';
   }
   // Fallback for SSR or other environments
   return 'http://localhost:3001/api';

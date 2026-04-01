@@ -1,0 +1,17 @@
+# Render Deployment Configuration
+
+services:
+  - type: web
+    name: tourettes-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/shows
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: JWT_SECRET
+        generateValue: true

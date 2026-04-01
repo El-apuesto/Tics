@@ -8,12 +8,11 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Show, Video as VideoType, Donation, Product } from '@/types';
-
-// API base URL
-const API_BASE = 'http://localhost:3001/api';
+import { API_BASE } from '@/lib/api-config';
 
 interface AdminDashboardProps {
   isOpen: boolean;
@@ -424,6 +423,9 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
               <Lock className="w-6 h-6 text-primary" />
               Admin Login
             </DialogTitle>
+            <DialogDescription>
+              Enter your credentials to access the admin dashboard
+            </DialogDescription>
           </DialogHeader>
           
           <div className="space-y-4 pt-4">

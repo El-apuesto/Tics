@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-project-name.vercel.app', 'https://tourettes-inc.vercel.app'] // Update with your Vercel URL
+    ? ['https://tictacs-g14mcvjfi-capis-projects-fa624458.vercel.app', 'https://tourettes-inc.vercel.app'] 
     : ['http://localhost:5173', 'http://localhost:3000'],
   credentials: true
 }));

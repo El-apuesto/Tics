@@ -36,38 +36,20 @@ function App() {
     }
   }, []);
 
-  // Global emergency override detection (works from any page)
+  // Simple admin shortcut: Ctrl+Shift+D
   useEffect(() => {
-    const keysPressed = new Set<string>();
-    
     const handleKeyDown = (e: KeyboardEvent) => {
-      keysPressed.add(e.key);
-      
-      // Check for 6-key combination: Left hand (Shift+1+2) + Right hand (Shift+9+0+8)
-      if (
-        keysPressed.has('Shift') && 
-        keysPressed.has('1') && 
-        keysPressed.has('2') && 
-        keysPressed.has('9') &&
-        keysPressed.has('0') && 
-        keysPressed.has('8')
-      ) {
+      // Ctrl+Shift+D to open admin dashboard
+      if (e.ctrlKey && e.shiftKey && e.key === 'd') {
         e.preventDefault();
         setIsAdminOpen(true);
-        keysPressed.clear();
       }
     };
     
-    const handleKeyUp = (e: KeyboardEvent) => {
-      keysPressed.delete(e.key);
-    };
-    
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
     
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
 

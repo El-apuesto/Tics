@@ -47,37 +47,6 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
     }
   };
 
-  // Alt+Space+Enter combo for /dash page too
-  useEffect(() => {
-    const keysPressed = new Set();
-    
-    const handleKeyDown = (e: KeyboardEvent) => {
-      keysPressed.add(e.key);
-      
-      // Check for Alt+Space+Enter on /dash page
-      if (e.altKey && e.key === ' ' && keysPressed.has('Enter')) {
-        e.preventDefault();
-        // Reveal password field on /dash page
-        setShowPassword(false);
-        setPassword('');
-        setUsername('');
-        setError('');
-      }
-    };
-    
-    const handleKeyUp = (e: KeyboardEvent) => {
-      keysPressed.delete(e.key);
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
   // Handle login
   const handleLogin = async () => {
     try {
@@ -476,37 +445,6 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
     onClose();
   };
 
-  // Keyboard shortcut listener (Ctrl + Tab + Down Arrow)
-  useEffect(() => {
-    const keysPressed = new Set<string>();
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      keysPressed.add(e.key);
-      
-      // Check for Ctrl + Tab + ArrowDown
-      if (
-        keysPressed.has('Control') &&
-        keysPressed.has('Tab') &&
-        keysPressed.has('ArrowDown')
-      ) {
-        e.preventDefault();
-        // Open admin (you'll need to pass a prop to trigger this from parent)
-      }
-    };
-
-    const handleKeyUp = (e: KeyboardEvent) => {
-      keysPressed.delete(e.key);
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-    };
-  }, []);
-
   if (!isAuthenticated) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
@@ -518,6 +456,9 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             </DialogTitle>
             <DialogDescription>
               Enter your credentials to access the admin dashboard
+              <div className="text-xs text-muted-foreground mt-2">
+                💡 Pro tip: Use <kbd className="px-1 py-0.5 bg-muted rounded text-xs">Ctrl+Shift+D</kbd> to open admin from any page
+              </div>
             </DialogDescription>
           </DialogHeader>
           

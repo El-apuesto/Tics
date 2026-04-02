@@ -77,7 +77,7 @@ export function HeroSection() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: 'top top',
-          end: '+=130%',
+          end: '+=150%', // Increased from 130% to accommodate sneak peek
           pin: true,
           scrub: 0.6,
         },
@@ -128,12 +128,12 @@ export function HeroSection() {
     >
 
       {/* Main Content Container */}
-      <div className="flex-1 flex flex-col items-center justify-center px-4 lg:px-8 py-16 lg:py-20">
+      <div className="flex-1 flex flex-col items-center justify-center px-4 lg:px-8 py-12 lg:py-16">
         
         {/* Video Gallery - Main Feature */}
         <div
           ref={videoGalleryRef}
-          className="relative w-full max-w-5xl"
+          className="relative w-full max-w-5xl mb-4"
         >
           {/* Video Container: crop top 4% and bottom 4% so container hugs speaker */}
           <div className="relative w-full aspect-video rounded-xl overflow-hidden shadow-2xl border-4 border-white/10 bg-black">
@@ -229,15 +229,15 @@ export function HeroSection() {
             )}
           </div>
 
-          {/* Upcoming shows - 2 widgets (half size), where the 4 gallery thumbnails were */}
-          <div className="grid grid-cols-2 gap-3 mt-4 max-w-2xl mx-auto">
+          {/* Upcoming shows - 2 widgets, responsive positioning */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-6 max-w-2xl mx-auto">
             {nextTwoShows.map((show) => (
               <a
                 key={show.id}
                 href={show.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-3 bg-card border border-border rounded-lg p-3 hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
+                className="group flex items-center gap-3 bg-card border border-border rounded-lg p-4 hover:border-primary/50 transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-1.5 text-primary font-bold text-xs">

@@ -375,6 +375,71 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
     }
   };
 
+  const handleAddPhoto = async () => {
+    const newPhoto = {
+      id: Date.now().toString(),
+      title: 'New Photo',
+      url: '/placeholder-image.jpg'
+    };
+
+    try {
+      const response = await fetch(`${API_BASE}/photos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(newPhoto),
+      });
+
+      if (response.ok) {
+        await loadData(); // Reload data
+      }
+    } catch (err) {
+      console.error('Failed to add photo:', err);
+    }
+  };
+
+  const handleDeletePhoto = async (id: string) => {
+    try {
+      const response = await fetch(`${API_BASE}/photos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.ok) {
+        await loadData(); // Reload data
+      }
+    } catch (err) {
+      console.error('Failed to delete photo:', err);
+    }
+  };
+
+  const handleUpdatePhoto = async (id: string, field: string, value: string) => {
+    try {
+      const photo = photos.find(p => p.id === id);
+      if (photo) {
+        const updatedPhoto = { ...photo, [field]: value };
+        const response = await fetch(`${API_BASE}/photos/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+          },
+          body: JSON.stringify(updatedPhoto),
+        });
+
+        if (response.ok) {
+          await loadData(); // Reload data
+        }
+      }
+    } catch (err) {
+      console.error('Failed to update photo:', err);
+    }
+  };
+
   const handleLogout = () => {
     setIsAuthenticated(false);
     setUsername('');
@@ -783,7 +848,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-lg">Photo Gallery</h3>
-              <Button onClick={() => {}} size="sm" className="btn-primary">
+              <Button onClick={handleAddPhoto} size="sm" className="btn-primary min-h-[44px] px-4">
                 <Plus className="w-4 h-4 mr-2" />
                 Add Photo
               </Button>
@@ -794,34 +859,18 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
                 <div key={photo.id} className="grid grid-cols-3 gap-3 p-3 bg-background border border-border rounded-lg">
                   <Input
                     value={photo.title}
-                    onChange={(e) => {
-                      const updated = photos.map(p => 
-                        p.id === photo.id ? {...p, title: e.target.value} : p
-                      );
-                      setPhotos(updated);
-                      localStorage.setItem('admin_photos', JSON.stringify(updated));
-                    }}
+                    onChange={(e) => handleUpdatePhoto(photo.id, 'title', e.target.value)}
                     placeholder="Photo Title"
                   />
                   <Input
                     value={photo.url}
-                    onChange={(e) => {
-                      const updated = photos.map(p => 
-                        p.id === photo.id ? {...p, url: e.target.value} : p
-                      );
-                      setPhotos(updated);
-                      localStorage.setItem('admin_photos', JSON.stringify(updated));
-                    }}
+                    onChange={(e) => handleUpdatePhoto(photo.id, 'url', e.target.value)}
                     placeholder="Image URL"
                   />
                   <div className="flex gap-2">
                     <button
-                      onClick={() => {
-                        const updated = photos.filter(p => p.id !== photo.id);
-                        setPhotos(updated);
-                        localStorage.setItem('admin_photos', JSON.stringify(updated));
-                      }}
-                      className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                      onClick={() => handleDeletePhoto(photo.id)}
+                      className="p-3 text-destructive hover:bg-destructive/10 rounded-lg transition-colors min-h-[44px] min-w-[44px] flex items-center justify-center"
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>

@@ -121,6 +121,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   const [photos, setPhotos] = useState<{id: string, url: string, title: string}[]>([]);
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   // Load data from API
   const loadData = async () => {
@@ -182,6 +183,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   };
 
   const handleAddShow = async () => {
+    setLoading(true);
     const newShow: Show = {
       id: Date.now().toString(),
       date: 'March 15, 8:00 PM',
@@ -192,6 +194,10 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
     };
 
     try {
+      console.log('Adding show:', newShow);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+      
       const response = await fetch(`${API_BASE}/shows`, {
         method: 'POST',
         headers: {
@@ -199,13 +205,24 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
           'Authorization': `Bearer ${authToken}`,
         },
         body: JSON.stringify(newShow),
+        signal: controller.signal,
       });
 
+      clearTimeout(timeoutId);
+      console.log('Add show response:', response.status);
+      
       if (response.ok) {
         await loadData(); // Reload data
+      } else {
+        const errorData = await response.json();
+        console.error('Add show failed:', errorData);
+        alert('Failed to add show. Please try again.');
       }
     } catch (err) {
       console.error('Failed to add show:', err);
+      alert('Failed to add show. Check your connection and try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -389,8 +406,8 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   const handleAddPhoto = async () => {
     const newPhoto = {
       id: Date.now().toString(),
-      title: 'New Photo',
-      url: '/placeholder-image.jpg'
+      title: 'Enter Photo Title Here',
+      url: 'https://via.placeholder.com/400x300.png?text=Your+Photo+Here'
     };
 
     try {
@@ -608,20 +625,22 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
           {/* Shows Tab */}
           <TabsContent value="shows" className="space-y-4">
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-              <h4 className="font-bold text-primary mb-2">Show Management Rules:</h4>
+              <h4 className="font-bold text-primary mb-2">Shows Management - Step by Step:</h4>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• <strong>Day only</strong> (e.g., "Monday"): Reappears weekly on Sunday refresh</li>
-                <li>• <strong>Day + Number</strong> (e.g., "Monday 15"): Reappears monthly on that day</li>
-                <li>• <strong>Month + Date</strong> (e.g., "Mar 15"): Removed forever after date passes</li>
-                <li>• Shows are automatically removed when their day/time has passed</li>
+                <li>• <strong>Add Show:</strong> Click "Add Show" button</li>
+                <li>• <strong>Date Field:</strong> Enter like "March 15, 8:00 PM"</li>
+                <li>• <strong>Venue:</strong> Enter venue name (e.g., "The Bowery Ballroom")</li>
+                <li>• <strong>Location:</strong> Enter city/state (e.g., "New York, NY")</li>
+                <li>• <strong>Link:</strong> Add ticket link or leave blank</li>
+                <li>• <strong>Auto-Removal:</strong> Shows disappear automatically after date passes</li>
               </ul>
             </div>
             
             <div className="flex items-center justify-between">
               <h3 className="font-bold text-lg">Upcoming Shows</h3>
-              <Button onClick={handleAddShow} size="sm" className="btn-primary">
+              <Button onClick={handleAddShow} size="sm" className="btn-primary" disabled={loading}>
                 <Plus className="w-4 h-4 mr-2" />
-                Add Show
+                {loading ? 'Adding...' : 'Add Show'}
               </Button>
             </div>
             
@@ -667,12 +686,14 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
           {/* Videos Tab */}
           <TabsContent value="videos" className="space-y-4">
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-              <h4 className="font-bold text-primary mb-2">Hero Section Video Rules:</h4>
+              <h4 className="font-bold text-primary mb-2">Videos - Step by Step:</h4>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Multiple videos allowed for hero section carousel</li>
-                <li>• Total file size limit: 30MB for all videos combined</li>
-                <li>• Videos will auto-rotate in hero section</li>
-                <li>• Use YouTube embed URLs for best performance</li>
+                <li>• <strong>Add Video:</strong> Click "Add Video" button</li>
+                <li>• <strong>Title:</strong> Enter video title (e.g., "Live at Bowery Ballroom")</li>
+                <li>• <strong>YouTube Embed:</strong> Get embed code from YouTube → Share → Embed</li>
+                <li>• <strong>Embed URL Example:</strong> https://www.youtube.com/embed/dQw4w9WgXcQ</li>
+                <li>• <strong>Thumbnail:</strong> Add image URL or use YouTube thumbnail</li>
+                <li>• <strong>Hero Section:</strong> Videos appear in main page carousel</li>
               </ul>
             </div>
             
@@ -721,21 +742,16 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
           {/* Products Tab */}
           <TabsContent value="products" className="space-y-4">
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-              <h4 className="font-bold text-primary mb-2">Real-Time Sales Tracking:</h4>
-              <div className="grid grid-cols-3 gap-4 text-sm">
-                <div>
-                  <span className="text-muted-foreground">Total Sales:</span>
-                  <span className="ml-2 font-bold text-foreground">${products.reduce((sum, p) => sum + (p.sales || 0) * p.price, 0).toFixed(2)}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Units Sold:</span>
-                  <span className="ml-2 font-bold text-foreground">{products.reduce((sum, p) => sum + (p.sales || 0), 0)}</span>
-                </div>
-                <div>
-                  <span className="text-muted-foreground">Last Updated:</span>
-                  <span className="ml-2 font-bold text-foreground">{new Date().toLocaleTimeString()}</span>
-                </div>
-              </div>
+              <h4 className="font-bold text-primary mb-2">Products - Step by Step:</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• <strong>Add Product:</strong> Click "Add Product" button</li>
+                <li>• <strong>Name:</strong> Enter product name (e.g., "Tourettes Logo T-Shirt")</li>
+                <li>• <strong>Price:</strong> Enter price in dollars (e.g., 25.00)</li>
+                <li>• <strong>Image URL:</strong> Use product photo URL from Printful or elsewhere</li>
+                <li>• <strong>Printful URL:</strong> Get from your Printful dashboard → Store</li>
+                <li>• <strong>Category:</strong> Enter "apparel", "accessories", etc.</li>
+                <li>• <strong>Sales:</strong> Updates automatically from Stripe payments</li>
+              </ul>
             </div>
             
             <div className="flex items-center justify-between">
@@ -848,12 +864,13 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
           {/* Photos Tab */}
           <TabsContent value="photos" className="space-y-4">
             <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
-              <h4 className="font-bold text-primary mb-2">Photo Management:</h4>
+              <h4 className="font-bold text-primary mb-2">Photo Management Instructions:</h4>
               <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Manage closing section polaroid photos</li>
-                <li>• Add donation widget image</li>
-                <li>• Update hero section images</li>
-                <li>• Photos appear in real-time on website</li>
+                <li>• <strong>Add Photo:</strong> Click "Add Photo" button</li>
+                <li>• <strong>Title:</strong> Click the title field and type a name (e.g., "Show Photo 1")</li>
+                <li>• <strong>Image URL:</strong> Replace placeholder with your image link (see below)</li>
+                <li>• <strong>Where to get images:</strong> Upload to Imgur, use any online image URL</li>
+                <li>• <strong>Example URL:</strong> https://i.imgur.com/yourimage.jpg</li>
               </ul>
             </div>
             
@@ -871,12 +888,12 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
                   <Input
                     value={photo.title}
                     onChange={(e) => handleUpdatePhoto(photo.id, 'title', e.target.value)}
-                    placeholder="Photo Title"
+                    placeholder="e.g., Show Photo, Fan Picture, etc."
                   />
                   <Input
                     value={photo.url}
                     onChange={(e) => handleUpdatePhoto(photo.id, 'url', e.target.value)}
-                    placeholder="Image URL"
+                    placeholder="https://i.imgur.com/yourimage.jpg"
                   />
                   <div className="flex gap-2">
                     <button

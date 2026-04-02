@@ -14,6 +14,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import type { Show, Video as VideoType, Donation, Product } from '@/types';
 import { API_BASE } from '@/lib/api-config';
 
+// Debug: Log API_BASE
+console.log('AdminDashboard API_BASE:', API_BASE);
+
 interface AdminDashboardProps {
   isOpen: boolean;
   onClose: () => void;
@@ -78,6 +81,9 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   // Handle login
   const handleLogin = async () => {
     try {
+      console.log('Attempting login to:', API_BASE);
+      console.log('Credentials:', { username, password: '***' });
+      
       const response = await fetch(`${API_BASE}/admin/login`, {
         method: 'POST',
         headers: {
@@ -86,7 +92,11 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
         body: JSON.stringify({ username, password }),
       });
 
+      console.log('Response status:', response.status);
+      console.log('Response ok:', response.ok);
+
       const data = await response.json();
+      console.log('Response data:', data);
 
       if (data.success) {
         setIsAuthenticated(true);
@@ -98,6 +108,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
         setError('Invalid username or password');
       }
     } catch (err) {
+      console.error('Login error:', err);
       setError('Login failed. Please try again.');
     }
   };

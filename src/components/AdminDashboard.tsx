@@ -519,7 +519,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl bg-card border-border max-h-[90vh] overflow-auto">
+      <DialogContent className="sm:max-w-4xl bg-card border-border max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="font-display font-black text-2xl flex items-center justify-between">
             <span className="flex items-center gap-3">

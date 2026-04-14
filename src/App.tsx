@@ -36,23 +36,6 @@ function App() {
     }
   }, []);
 
-  // Simple admin shortcut: Ctrl+Shift+D
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Ctrl+Shift+D to open admin dashboard
-      if (e.ctrlKey && e.shiftKey && e.key === 'd') {
-        e.preventDefault();
-        setIsAdminOpen(true);
-      }
-    };
-    
-    window.addEventListener('keydown', handleKeyDown);
-    
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
   // Check if route exists (for 404 handling)
   const isValidRoute = () => {
     const validRoutes = ['/', '/about', '/shop', '/support', '/dash'];

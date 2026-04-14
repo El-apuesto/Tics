@@ -456,9 +456,6 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             </DialogTitle>
             <DialogDescription>
               Enter your credentials to access the admin dashboard
-              <div className="text-xs text-muted-foreground mt-2">
-                💡 Pro tip: Use <kbd className="px-1 py-0.5 bg-muted rounded text-xs">Ctrl+Shift+D</kbd> to open admin from any page
-              </div>
             </DialogDescription>
           </DialogHeader>
           

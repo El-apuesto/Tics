@@ -448,7 +448,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   if (!isAuthenticated) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-card border-border w-full max-w-full h-full sm:h-auto top-0 translate-y-0 sm:top-[50%] sm:translate-y-[-50%] rounded-none sm:rounded-lg sm:max-w-md overflow-y-auto max-h-screen sm:max-h-[90dvh]">
+        <DialogContent className="sm:max-w-md bg-card border-border overflow-y-auto max-h-[90dvh]">
           <DialogHeader>
             <DialogTitle className="font-display font-black text-2xl flex items-center gap-3">
               <Lock className="w-6 h-6 text-primary" />
@@ -519,7 +519,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-card border-border w-full max-w-full h-full top-0 translate-y-0 sm:top-[50%] sm:translate-y-[-50%] rounded-none sm:rounded-lg sm:max-w-4xl overflow-y-auto max-h-screen sm:max-h-[90dvh]">
+      <DialogContent className="sm:max-w-4xl bg-card border-border overflow-y-auto max-h-[90dvh]">
         <DialogHeader>
           <DialogTitle className="font-display font-black text-2xl flex items-center justify-between">
             <span className="flex items-center gap-3">
@@ -883,14 +883,6 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
               </Button>
             </div>
 
-            <div className="mt-8 p-4 bg-primary/5 border border-primary/20 rounded-lg">
-              <h4 className="font-bold mb-2">Keyboard Shortcut</h4>
-              <p className="text-sm text-muted-foreground">
-                Press <kbd className="px-2 py-1 bg-muted rounded text-xs">Ctrl</kbd> +{' '}
-                <kbd className="px-2 py-1 bg-muted rounded text-xs">Tab</kbd> +{' '}
-                <kbd className="px-2 py-1 bg-muted rounded text-xs">↓</kbd> to quickly open admin
-              </p>
-            </div>
           </TabsContent>
         </Tabs>
       </DialogContent>

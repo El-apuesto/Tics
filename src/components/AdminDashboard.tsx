@@ -448,7 +448,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
   if (!isAuthenticated) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="sm:max-w-md bg-card border-border">
+        <DialogContent className="bg-card border-border w-full max-w-full h-full sm:h-auto top-0 translate-y-0 sm:top-[50%] sm:translate-y-[-50%] rounded-none sm:rounded-lg sm:max-w-md overflow-y-auto max-h-screen sm:max-h-[90dvh]">
           <DialogHeader>
             <DialogTitle className="font-display font-black text-2xl flex items-center gap-3">
               <Lock className="w-6 h-6 text-primary" />
@@ -519,7 +519,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-4xl bg-card border-border max-h-[90dvh] overflow-y-auto">
+      <DialogContent className="bg-card border-border w-full max-w-full h-full top-0 translate-y-0 sm:top-[50%] sm:translate-y-[-50%] rounded-none sm:rounded-lg sm:max-w-4xl overflow-y-auto max-h-screen sm:max-h-[90dvh]">
         <DialogHeader>
           <DialogTitle className="font-display font-black text-2xl flex items-center justify-between">
             <span className="flex items-center gap-3">
@@ -533,32 +533,34 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
         </DialogHeader>
 
         <Tabs defaultValue="shows" className="pt-4">
-          <TabsList className="grid w-full grid-cols-6">
-            <TabsTrigger value="shows">
-              <Calendar className="w-4 h-4 mr-2" />
-              Shows
-            </TabsTrigger>
-            <TabsTrigger value="videos">
-              <Video className="w-4 h-4 mr-2" />
-              Videos
-            </TabsTrigger>
-            <TabsTrigger value="products">
-              <ShoppingBag className="w-4 h-4 mr-2" />
-              Products
-            </TabsTrigger>
-            <TabsTrigger value="donations">
-              <DollarSign className="w-4 h-4 mr-2" />
-              Donations
-            </TabsTrigger>
-            <TabsTrigger value="photos">
-              <Image className="w-4 h-4 mr-2" />
-              Photos
-            </TabsTrigger>
-            <TabsTrigger value="settings">
-              <Lock className="w-4 h-4 mr-2" />
-              Settings
-            </TabsTrigger>
-          </TabsList>
+          <div className="overflow-x-auto -mx-1 px-1">
+            <TabsList className="grid w-full min-w-[500px] grid-cols-6">
+              <TabsTrigger value="shows">
+                <Calendar className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Shows</span>
+              </TabsTrigger>
+              <TabsTrigger value="videos">
+                <Video className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Videos</span>
+              </TabsTrigger>
+              <TabsTrigger value="products">
+                <ShoppingBag className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Products</span>
+              </TabsTrigger>
+              <TabsTrigger value="donations">
+                <DollarSign className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Donations</span>
+              </TabsTrigger>
+              <TabsTrigger value="photos">
+                <Image className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Photos</span>
+              </TabsTrigger>
+              <TabsTrigger value="settings">
+                <Lock className="w-4 h-4 mr-1 sm:mr-2" />
+                <span className="text-xs sm:text-sm">Settings</span>
+              </TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Shows Tab */}
           <TabsContent value="shows" className="space-y-4">
@@ -584,7 +586,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             
             <div className="space-y-3">
               {shows.map((show) => (
-                <div key={show.id} className="grid grid-cols-4 gap-3 p-3 bg-background border border-border rounded-lg">
+                <div key={show.id} className="flex flex-col sm:grid sm:grid-cols-4 gap-3 p-3 bg-background border border-border rounded-lg">
                   <Input
                     value={show.date}
                     onChange={(e) => handleUpdateShow(show.id, 'date', e.target.value)}
@@ -645,7 +647,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             
             <div className="space-y-3">
               {videos.map((video) => (
-                <div key={video.id} className="grid grid-cols-3 gap-3 p-3 bg-background border border-border rounded-lg">
+                <div key={video.id} className="flex flex-col sm:grid sm:grid-cols-3 gap-3 p-3 bg-background border border-border rounded-lg">
                   <Input
                     value={video.title}
                     onChange={(e) => handleUpdateVideo(video.id, 'title', e.target.value)}
@@ -702,7 +704,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             
             <div className="space-y-3">
               {products.map((product) => (
-                <div key={product.id} className="grid grid-cols-6 gap-3 p-3 bg-background border border-border rounded-lg">
+                <div key={product.id} className="flex flex-col sm:grid sm:grid-cols-6 gap-3 p-3 bg-background border border-border rounded-lg">
                   <Input
                     value={product.name}
                     onChange={(e) => handleUpdateProduct(product.id, 'name', e.target.value)}
@@ -822,7 +824,7 @@ export function AdminDashboard({ isOpen, onClose }: AdminDashboardProps) {
             
             <div className="space-y-3">
               {photos.map((photo) => (
-                <div key={photo.id} className="grid grid-cols-3 gap-3 p-3 bg-background border border-border rounded-lg">
+                <div key={photo.id} className="flex flex-col sm:grid sm:grid-cols-3 gap-3 p-3 bg-background border border-border rounded-lg">
                   <Input
                     value={photo.title}
                     onChange={(e) => handleUpdatePhoto(photo.id, 'title', e.target.value)}
